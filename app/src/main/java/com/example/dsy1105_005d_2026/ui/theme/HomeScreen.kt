@@ -29,11 +29,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.dsy1105_005d_2026.ui.login.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-fun HomeScreen(){
+fun HomeScreen(
+        navController: NavController,
+        vm: LoginViewModel= viewModel()
+){
     // darkScheme es una funcion del material 3
     
     val ColorScheme = darkColorScheme(
@@ -141,7 +148,9 @@ color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
 @Composable
 
 fun HomeScreenPreview(){
-    HomeScreen()
+    val navController= rememberNavController()
+    val vm= LoginViewModel()
+    HomeScreen(navController=navController,vm=vm )
 }
 
 
