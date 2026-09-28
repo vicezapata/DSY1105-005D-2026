@@ -16,17 +16,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,6 +49,9 @@ fun HomeScreen(
         navController: NavController,
         vm: LoginViewModel= viewModel()
 ){
+    val state=vm.uiState
+    var showPass by remember { mutableStateOf(false) }
+
     // darkScheme es una funcion del material 3
     
     val ColorScheme = darkColorScheme(
@@ -122,12 +133,37 @@ color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
 
             } // fin Aqui aplicamos las propiedades de la fila
 
+            OutlinedTextField(
+                value=state.username,
+                onValueChange = vm::onUsernameChange,
+                label={Text("Usuario")},
+                singleLine = true,
+                modifier= Modifier.fillMaxWidth(0.95f)
+            )// fin usuario
 
+            OutlinedTextField(
+                value=state.password,
+                onValueChange = vm::onPasswordChange,
+                label={Text("Contraseña")},
+                singleLine=true,
+
+
+                visualTransformation= if(showPass)
+                    VisualTransformation.None else PasswordVisualTransformation(),
+
+                trailingIcon = {
+                    TextButton(onClick = {showPass=!showPass}){
+                        Text (if (showPass) "Ocultar" else "Ver")
+                    }//Fin show
+
+                }, //fin trail
+                modifier=Modifier.fillMaxWidth(0.95f)
+            )//fin password
 
 
             Button(onClick = {/* accion futura */},
                 modifier= Modifier
-                    .fillMaxWidth(0.8f)
+                    .fillMaxWidth(0.95f)
 
 
             ){
@@ -148,6 +184,7 @@ color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
 @Composable
 
 fun HomeScreenPreview(){
+    //simulacion que permite activar Homescreen
     val navController= rememberNavController()
     val vm= LoginViewModel()
     HomeScreen(navController=navController,vm=vm )
