@@ -1,6 +1,7 @@
 package com.example.dsy1105_005d_2026.ui.theme
 
 
+import android.R.attr.enabled
 import com.example.dsy1105_005d_2026.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -160,15 +161,33 @@ color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
                 modifier=Modifier.fillMaxWidth(0.95f)
             )//fin password
 
+            if(state.error !=null){
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text=state.error ?:"",
+                    color=MaterialTheme.colorScheme.primary,
+                    fontWeight= FontWeight.Bold
+                )
+            }
 
-            Button(onClick = {/* accion futura */},
-                modifier= Modifier
-                    .fillMaxWidth(0.95f)
+Spacer(modifier=Modifier.height(66.dp))
 
+            Button(onClick = {/* accion futura */
+            vm.submit { user ->
+                navController.navigate("muestraDatos/$user")
+                {
+                    popUpTo("login") { inclusive = true }  // no vuelva al login
+                    launchSingleTop = true
+                }//fin navegation
+            } //fin submit
+            }, //fin onclick
 
+                enabled=!state.isLoading,
+                modifier= Modifier.fillMaxWidth(0.6f)
             ){
-                Text("Presioname")
+              //  Text("Presioname")
 
+                Text (if (state.isLoading) "Validando" else "Iniciar Session")
             }// fin button
 
 
